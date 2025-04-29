@@ -1,0 +1,62 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+    <header>
+        <div class="container">
+            <h1>Добро пожаловать в Автокульт</h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'index' %}">Главная страница</a></li>
+                    <li><a href="#cars">Автомобили</a></li>
+                    <li><a href="#contact">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+<body>
+    <main class="main-content">
+    {% block content %}
+    {% endblock %}
+    </main>
+</body>
+    <section id="contact" class="contact">
+        <h2>Автокульт</h2>
+        <div class="container">
+            <div class="con-grid">
+                <div class="con">
+                    <a href="https://istokmw.ru/" target="_blank"><img src="http://qrcoder.ru/code/?https%3A%2F%2Fistokmw.ru%2F&4&0" width="132" height="132" border="0" title="QR код"></a>
+                    <div class="footer__social-links">
+                        <img src="{% static 'img/vkLogo.png' %}" width="50" height="50" alt="vk">
+                        <img src="{% static 'img/youtubeLogo.png' %}" width="50" height="50" alt="youtube">
+                        <img src="{% static 'img/telegramLogo.png' %}" width="50" height="50" alt="telegram">
+                    </div>
+                    <p>&#9742;+7 (777) 777-77-77</p>
+                </div>
+                <div class="con">
+                    <form>
+                        <input type="text" placeholder="Имя">
+                        <input type="email" placeholder="Номер телефона">
+                        <button type="submit">Заказать звонок</button>
+                    </form>
+                </div>
+
+                <div class="con">
+                    <div style=""><a href="https://yandex.ru/maps/org/nauchno_proizvodstvennoye_predpriyatiye_istok_imeni_shokina/240971306967/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;"></a><a href="https://yandex.ru/maps/21619/fryazino/category/industrial_enterprise/184106880/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:14px;"></a><a href="https://yandex.ru/maps/21619/fryazino/category/research_institute/184106192/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:28px;"></a><iframe src="https://yandex.ru/map-widget/v1/org/nauchno_proizvodstvennoye_predpriyatiye_istok_imeni_shokina/240971306967/?ll=38.046877%2C55.964300&z=15" width="480" height="230"  "></iframe></div>
+                </div>
+            </div>
+        </div>
+        <p>Данный Интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями Статьи 437 Гражданского кодекса Российской Федерации. Для получения подробной информации о стоимости автомобилей и дополнительного оборудования, приобретении в кредит, страховании, техническом обслуживании, ремонте и запасных частях обращайтесь в автосалоны Автокульт. Права на сайт принадлежат «AO Автокульт» (ИНН 777777777, ОГРН 8888888888 от 1 июля 2024 года) тел. +7 (888) 888-88-88, адрес эл. почты avtokylt@mail.ru</p>
+        <p>&copy; 2024 Автокульт. Все права защищены.</p>
+    </section>
+
+
+</html>

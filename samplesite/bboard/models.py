@@ -1,24 +1,31 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-class Bb (models.Model):
-    title = models.CharField(max_length=50, verbose_name="Товар")
-    content = models.TextField(null=True, blank=True, verbose_name='Описание')
-    price = models.FloatField(null=True, blank=True, verbose_name='Цена')
-    published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Опубликовано')
-    rubric = models.ForeignKey('Rubric', null=True, on_delete=models.PROTECT, verbose_name='Рубрика')
-
-    class Meta:
-        verbose_name_plural = 'Объявления'
-        verbose_name = 'Объявление'
-        ordering = ['-published']
-
-class Rubric(models.Model):
-    name = models.CharField(max_length=20, db_index=True, verbose_name='Название')
+class CarBrand(models.Model):
+    name = models.CharField(max_length=30, unique=True, verbose_name='Марка машины')
 
     def __str__(self):
         return self.name
 
+class CarModel(models.Model):
+    brand = models.ForeignKey(CarBrand, on_delete=models.CASCADE, related_name='models', verbose_name='Марка машины')
+    name = models.CharField(max_length=30, verbose_name='Модель машины')
+
     class Meta:
-        verbose_name_plural = 'Рубрики'
-        verbose_name = 'Рубрика'
-        ordering = ['name']
+        unique_together = ('brand', 'name')
+
+    def __str__(self):
+        return f'{self.brand.name} {self.name}'
+
+class Car(models.Model):  # Конкретная машина
+    brand = models.ForeignKey(CarBrand, on_delete=models.CASCADE, verbose_name='Марка машины')
+    model = models.ForeignKey(CarModel, on_delete=models.CASCADE, verbose_name='Модель машины')
+    year = models.IntegerField(verbose_name='Год выпуска')
+    mileage = models.IntegerField(verbose_name='Пробег')
+    content = models.TextField(verbose_name='Описание')
+    price = models.IntegerField(verbose_name='Цена')
+    image = models.ImageField(upload_to='cars/', verbose_name='Фото машины', blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.model}'
+
