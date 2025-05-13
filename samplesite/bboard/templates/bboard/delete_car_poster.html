@@ -1,0 +1,132 @@
+{% extends 'bboard/layout/basic.html' %}
+
+{% block title %}Удалить автомобиль{% endblock %}
+
+{% block content %}
+<style>
+    .container {
+        max-width: 1250px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-bottom: 20px;
+    }
+
+    .logo {
+        width: 80px;
+        height: auto;
+    }
+
+    .main-text {
+        text-align: left;
+        margin-top: 50px;
+        font-size: 28px;
+        color: #333;
+    }
+
+    .car-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 40px;
+    }
+
+    .car-item {
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .car-item-info {
+        flex: 1;
+        padding-right: 20px;
+    }
+
+    .car-item img {
+        max-width: 200px;
+        height: auto;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .car-item strong {
+        font-size: 18px;
+        color: #222;
+    }
+
+    .car-item span {
+        display: block;
+        margin-top: 5px;
+        color: #555;
+    }
+</style>
+<div class="container">
+    <form><h2>Удалить автомобиль:</h2></form>
+
+<form method="get" style="display: flex; align-items: center; gap: 10px;">
+    <!-- Выбор бренда -->
+    <label for="brand">Бренд:</label>
+    <select name="brand" id="brand" onchange="this.form.submit()" required>
+        <option value="">Все</option>
+        {% for brand in brands %}
+            <option value="{{ brand.id }}" {% if selected_brand == brand.id|stringformat:"s" %}selected{% endif %}>
+                {{ brand.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <!-- Выбор модели (зависит от бренда) -->
+    <label for="model">Модель:</label>
+    <select name="model" id="model" {% if not selected_brand %}disabled{% endif %}>
+        <option value="">Все</option>
+        {% for model in car_models %}
+            <option value="{{ model.id }}" {% if selected_model == model.id|stringformat:"s" %}selected{% endif %}>
+                {{ model.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <!-- Год -->
+    <label for="year">Год:</label>
+    <input type="text" name="year" id="year" size="4" maxlength="4" value="{{ selected_year|default:'' }}" placeholder="2025">
+
+    <button type="submit">Фильтровать</button>
+</form>
+
+
+<div class="car-list">
+    {% if cars %}
+        {% for car in cars %}
+            <div class="car-item">
+                <div class="car-item-info">
+                    <strong>{{ car.brand.name }} {{ car.model.name }}</strong><br>
+                    <span>Год: {{ car.year }}</span><br>
+                    <span>Пробег: {{ car.mileage }} км</span><br>
+                    <span>Цена: {{ car.price }} ₽</span>
+                            <form method="post" action="{% url 'delete_car' car.id %}" onsubmit="return confirm('Удалить автомобиль?');">
+                    {% csrf_token %}
+                    <button type="submit">Удалить</button>
+                </form>
+                </div>
+                {% if car.image %}
+                    <img src="{{ car.image.url }}" alt="Фото {{ car.model.name }}" style="max-width: 200px; max-height: 150px;">
+                {% else %}
+                    <p>Фото отсутствует</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Машины отсутствуют в наличии.</p>
+    {% endif %}
+</div>
+</div>
+{% endblock %}

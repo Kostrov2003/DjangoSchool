@@ -1,0 +1,72 @@
+{% extends 'bboard/layout/basic.html' %}
+
+{% block title %}Добавить автомобиль{% endblock %}
+
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    <h2>Добавить автомобиль</h2>
+    {% csrf_token %}
+    <div>
+      {{ form.brand.label_tag }}<br>
+      {{ form.brand }}
+    </div>
+    <div>
+      <label for="id_model">Модель:</label><br>
+      <select name="model" id="id_model">
+        <option value="">Сначала выберите бренд</option>
+      </select>
+    </div>
+    <div>
+      {{ form.year.label_tag }}<br>
+      {{ form.year }}
+    </div>
+    <div>
+      {{ form.mileage.label_tag }}<br>
+      {{ form.mileage }}
+    </div>
+    <div>
+      {{ form.content.label_tag }}<br>
+      {{ form.content }}
+    </div>
+    <div>
+      {{ form.price.label_tag }}<br>
+      {{ form.price }}
+    </div>
+    <div>
+      {{ form.image.label_tag }}<br>
+      {{ form.image }}
+    </div>
+
+    <button type="submit">Сохранить</button>
+  </form>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const brandSelect = document.getElementById('id_brand');
+        const modelSelect = document.getElementById('id_model');
+
+        brandSelect.addEventListener('change', function () {
+            const brandId = this.value;
+            modelSelect.innerHTML = '<option>Загрузка...</option>';
+
+            fetch(`/get_models/?brand_id=${brandId}`)
+                .then(response => response.json())
+                .then(data => {
+                    modelSelect.innerHTML = '';
+                    if (data.length === 0) {
+                        modelSelect.innerHTML = '<option value="">Нет доступных моделей</option>';
+                        return;
+                    }
+                    data.forEach(function (model) {
+                        const option = document.createElement('option');
+                        option.value = model.id;
+                        option.textContent = model.name;
+                        modelSelect.appendChild(option);
+                    });
+                })
+                .catch(() => {
+                    modelSelect.innerHTML = '<option value="">Ошибка загрузки</option>';
+                });
+        });
+    });
+  </script>
+{% endblock %}

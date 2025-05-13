@@ -1,0 +1,33 @@
+{% extends 'bboard/layout/basic.html' %}
+
+{% block title %}Добавить модель автомобиля{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Добавить модель автомобиля</h2>
+
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+                <div>
+            <label for="id_brand">Бренд:</label>
+            {{ form.brand }}
+        </div>
+
+        <div>
+            <label for="id_name">Название модели:</label>
+            {{ form.name }}
+        </div>
+        <button type="submit">Добавить модель</button>
+    </form>
+</div>
+{% endblock %}

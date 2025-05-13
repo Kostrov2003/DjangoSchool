@@ -8,6 +8,50 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>{% block title %}{% endblock %}</title>
 </head>
+<style>
+    /* Сброс отступов */
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Горизонтальное меню */
+nav ul > li {
+    display: inline-block;
+    position: relative;
+}
+
+/* Ссылки */
+nav a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: black;
+}
+
+/* Подменю скрыто по умолчанию */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #333333;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+/* Элементы подменю */
+.dropdown-content li {
+    display: block;
+}
+
+/* Показываем подменю при наведении */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+</style>
 
     <header>
         <div class="container">
@@ -17,6 +61,21 @@
                     <li><a href="{% url 'index' %}">Главная страница</a></li>
                     <li><a href="#cars">Автомобили</a></li>
                     <li><a href="#contact">Контакты</a></li>
+                    {% if user.is_authenticated %}
+                    <li class="dropdown"><a>Функции администратора</a>
+                        <ul class="dropdown-content">
+                            <li><a href="{% url 'add_car' %}">Добавить автомобиль</a></li>
+                            <li><a href="{% url 'add_model' %}">Добавить модель автомобиля</a></li>
+                            <li><a href="{% url 'manage_car' %}">Удалить автомобиль</a></li>
+                        </ul>
+                    </li>
+                    <li><form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
+                    {% csrf_token %}
+                    </form>
+                    <a href="#" onclick="document.getElementById('logout-form').submit(); return false;">Выйти</a></li>
+                    {% else %}
+                    <li><a href="{% url 'login' %}">Вход</a></li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>
