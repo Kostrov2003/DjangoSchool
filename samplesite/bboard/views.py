@@ -82,6 +82,9 @@ def get_models(request):
     models = CarModel.objects.filter(brand_id=brand_id).values('id', 'name')
     return JsonResponse(list(models), safe=False)
 
+def car_info(request, car_id):
+    car = get_object_or_404(Car, id=car_id)
+    return render(request, 'bboard/car_info_popup.html', {'car': car})
 
 def page_bmw(request):
     try:

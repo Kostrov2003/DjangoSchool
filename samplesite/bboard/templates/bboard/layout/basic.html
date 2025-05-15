@@ -62,7 +62,7 @@ nav a {
                     <li><a href="#cars">Автомобили</a></li>
                     <li><a href="#contact">Контакты</a></li>
                     {% if user.is_authenticated %}
-                    <li class="dropdown"><a>Функции администратора</a>
+                    <li class="dropdown"><a>Администрирование</a>
                         <ul class="dropdown-content">
                             <li><a href="{% url 'add_car' %}">Добавить автомобиль</a></li>
                             <li><a href="{% url 'add_model' %}">Добавить модель автомобиля</a></li>

@@ -1,0 +1,10 @@
+<h2>{{ car.model.brand }} {{ car.model.name }}</h2>
+<p><strong>Год:</strong> {{ car.year }}</p>
+<p><strong>Пробег:</strong> {{ car.mileage }} км</p>
+<p><strong>Цена:</strong> {{ car.price }} ₽</p>
+{% if car.content %}
+    <p><strong>Описание:</strong> {{ car.content }}</p>
+{% endif %}
+{% if car.image %}
+    <img src="{{ car.image.url }}" alt="Изображение {{ car.model.name }}" style="max-width: 100%; height: auto; margin-top: 10px;">
+{% endif %}
